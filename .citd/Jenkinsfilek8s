@@ -17,7 +17,7 @@ pipeline {
 	environment {
 		GITHUB_OWNER = 'microchip-pic-avr-examples'	
 		GITHUB_URL ='https://github.com/mchpTestArea/avr64dd32-cnano-out-of-the-box-code-mplab-mcc'
-		BITBUCKET_URL = 'https://bitbucket.microchip.com/users/i64056/repos/avr64dd32-cnano-out-of-the-box-code-mplab-mcc/browse'
+		BITBUCKET_URL = 'https://bitbucket.microchip.com/scm/~i64056/avr64dd32-cnano-out-of-the-box-code-mplab-mcc.git'
 		SEMVER_REGEX = '^(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+$'
 		ARTIFACTORY_SERVER = 'https://artifacts.microchip.com:7999/artifactory'
 		RUN_METADATA_STAGE = false
