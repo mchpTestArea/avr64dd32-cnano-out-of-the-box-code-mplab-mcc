@@ -58,6 +58,9 @@ pipeline {
 					if(env.TAG_NAME =~ env.SEMVER_REGEX){
 						env.DEPLOY_TO_PORTAL_AND_GITHUB = true 
 					}
+					if(version == env.TAG_NAME){
+						execute("echo 'Tag name is not equal to metadata content version.' && exit 1")
+					}
 					println "RUN_METADATA_STAGE: $env.RUN_METADATA_STAGE"
 					println "DEPLOY_TO_PORTAL_AND_GITHUB: $env.DEPLOY_TO_PORTAL_AND_GITHUB"
 				}
@@ -154,7 +157,7 @@ pipeline {
 					withCredentials([usernamePassword(credentialsId: 'BD1085_GitHub_Token', usernameVariable: 'USER_NAME', passwordVariable:'USER_PASS' )]) {					
 						execute("python ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py -deploy=true -gpat=${USER_PASS} -dgid=${USER_NAME} -dburl=${env.BITBUCKET_URL} -dgurl=${env.GITHUB_URL} -dtag=${env.TAG_NAME} -dmfd=true -digmc=true")	
 						execute("cd ./C-Nano-Out-of-the-Box.X/dist/free/production && mv C-Nano-Out-of-the-Box.X.production.hex C-Nano-Out-of-the-Box-${env.TAG_NAME}.hex")
-						execute("python ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rlo=true -gpat=${USER_PASS}  -rpn=${githubObj.repoName} -rltv=${env.TAG_NAME} -rltt=${env.TAG_NAME} -rlua=./${githubObj.repoName}.X/dist/free/production/${githubObj.repoName}-${env.TAG_NAME}.hex")	
+						execute("python ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rlo=true -gpat=${USER_PASS}  -rpn=${githubObj.repoName} -rltv=${env.TAG_NAME} -rltt=${env.TAG_NAME} -rlua=./C-Nano-Out-of-the-Box.X/dist/free/production/C-Nano-Out-of-the-Box-${env.TAG_NAME}.hex")	
 					}
 					sendSuccessfulGithubDeploymentEmail()
 				}
