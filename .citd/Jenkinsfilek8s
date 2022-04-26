@@ -140,11 +140,11 @@ pipeline {
 		}
 		
 		stage('github-deploy') {
-			when{
+			/*when{
 				expression{
 					env.DEPLOY_TO_PORTAL_AND_GITHUB == true
 				}				
-			}
+			}*/
 			steps{
 				script{
 					def githubObj = getGiHubInfo()					
