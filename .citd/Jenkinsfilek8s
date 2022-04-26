@@ -34,8 +34,6 @@ pipeline {
 				script{
 					def tool_version = readProperties  file: './mpae-buildpipeline-groovy-scripts/tool.properties'
 					createEmailList()
-					def RUN_METADATA_STAGE = false
-					def DEPLOY_TO_PORTAL_AND_GITHUB =false
 					def jsonObj = readJSON file:".main-meta/main.json"
 					def repoName, prNum, bitbucketSlug, jobName, blueOceanURL
 					def version = "${jsonObj.content.version}".trim()
@@ -48,27 +46,27 @@ pipeline {
 						jobName = env.JOB_NAME.replace(' ','%20').replace("/${env.BRANCH_NAME}",'').replace('/','%2F')
 						blueOceanURL = "https://ci.devops.microchip.com/mcu8/blue/organizations/jenkins/" 
 						if(env.CHANGE_TARGET == "master"){
-							RUN_METADATA_STAGE = true
+							env.RUN_METADATA_STAGE = true
 						}
 						else if(env.CHANGE_TARGET == "develop"){
-							RUN_METADATA_STAGE = true
+							env.RUN_METADATA_STAGE = true
 						}
 						else{
-							RUN_METADATA_STAGE = false
+							env.RUN_METADATA_STAGE = false
 						}
 					}
 					if(env.TAG_NAME =~ env.SEMVER_REGEX){
-						DEPLOY_TO_PORTAL_AND_GITHUB = true 
+						env.DEPLOY_TO_PORTAL_AND_GITHUB = true 
 					}
-					println "RUN_METADATA_STAGE: $RUN_METADATA_STAGE"
-					println "DEPLOY_TO_PORTAL_AND_GITHUB: $DEPLOY_TO_PORTAL_AND_GITHUB"
+					println "RUN_METADATA_STAGE: $env.RUN_METADATA_STAGE"
+					println "DEPLOY_TO_PORTAL_AND_GITHUB: $env.DEPLOY_TO_PORTAL_AND_GITHUB"
 				}
 			}
 		}
 		stage('metadata-validation'){
 			when{
 				expression{
-					RUN_METADATA_STAGE == true
+					env.RUN_METADATA_STAGE == true
 				}
 			}
 			parallel{
@@ -144,7 +142,7 @@ pipeline {
 		stage('github-deploy') {
 			when{
 				expression{
-					DEPLOY_TO_PORTAL_AND_GITHUB == true
+					env.DEPLOY_TO_PORTAL_AND_GITHUB == true
 				}				
 			}
 			steps{
@@ -165,7 +163,7 @@ pipeline {
 		
 		/*stage('portal-deploy') {
 			when{
-				DEPLOY_TO_PORTAL_AND_GITHUB == true
+				env.DEPLOY_TO_PORTAL_AND_GITHUB == true
 			}
 			steps{
 				script{
