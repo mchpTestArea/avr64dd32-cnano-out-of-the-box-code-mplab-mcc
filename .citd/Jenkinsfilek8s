@@ -65,7 +65,9 @@ pipeline {
 		}
 		stage('metadata-validation'){
 			when{
-				RUN_METADATA_STAGE == true
+				expression{
+					RUN_METADATA_STAGE == true
+				}
 			}
 			parallel{
 				stage("CITD_tool"){
@@ -139,7 +141,9 @@ pipeline {
 		
 		stage('github-deploy') {
 			when{
-				DEPLOY_TO_PORTAL_AND_GITHUB == true
+				expression{
+					DEPLOY_TO_PORTAL_AND_GITHUB == true
+				}				
 			}
 			steps{
 				script{
