@@ -20,6 +20,8 @@ pipeline {
 		BITBUCKET_URL = 'https://bitbucket.microchip.com/users/i64056/repos/avr64dd32-cnano-out-of-the-box-code-mplab-mcc/browse'
 		SEMVER_REGEX = '^(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+$'
 		ARTIFACTORY_SERVER = 'https://artifacts.microchip.com:7999/artifactory'
+		RUN_METADATA_STAGE = false
+		DEPLOY_TO_PORTAL_AND_GITHUB = false
 	}	
 	options {
 		timestamps()
