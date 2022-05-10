@@ -16,8 +16,8 @@ pipeline {
 	
 	environment {
 		GITHUB_OWNER = 'microchip-pic-avr-examples'	
-		GITHUB_URL ='https://github.com/microchip-pic-avr-examples/avr64dd32-cnano-out-of-the-box-code-mplab-mcc'
-		BITBUCKET_URL = 'https://bitbucket.microchip.com/scm/ebe/avr64dd32-cnano-out-of-the-box-code-mplab-mcc.git'
+		GITHUB_URL ='https://github.com/mchpTestArea/avr64dd32-cnano-out-of-the-box-code-mplab-mcc'
+		BITBUCKET_URL = 'https://bitbucket.microchip.com/scm/~i64056/avr64dd32-cnano-out-of-the-box-code-mplab-mcc.git'
 		SEMVER_REGEX = '^(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+\\.(0|[1-9]\\d*)+$'
 		ARTIFACTORY_SERVER = 'https://artifacts.microchip.com:7999/artifactory'
 		RUN_METADATA_STAGE = false
@@ -32,7 +32,6 @@ pipeline {
 		stage('pre-requisite'){
 			steps{
 				script{
-					//def tool_version = readProperties  file: './mpae-buildpipeline-groovy-scripts/tool.properties'
 					createEmailList()
 					def jsonObj = readJSON file:".main-meta/main.json"
 					def repoName, prNum, bitbucketSlug, jobName, blueOceanURL
@@ -145,7 +144,7 @@ pipeline {
 			}
 		}
 		
-		/*stage('github-deploy') {
+		stage('github-deploy') {
 			when{
 				expression{
 					DEPLOY_TO_PORTAL_AND_GITHUB == true
@@ -157,7 +156,7 @@ pipeline {
 					download("tool-github-deploy","1.4.0")		
 					execute("chmod +x ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py")  
 							
-					withCredentials([usernamePassword(credentialsId: '8bit-examples.github.com', usernameVariable: 'USER_NAME', passwordVariable:'USER_PASS' )]) {					
+					withCredentials([usernamePassword(credentialsId: 'BD1085_GitHub_Token', usernameVariable: 'USER_NAME', passwordVariable:'USER_PASS' )]) {					
 						execute("python ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py -deploy=true -gpat=${USER_PASS} -dgid=${USER_NAME} -dburl=${env.BITBUCKET_URL} -dgurl=${env.GITHUB_URL} -dtag=${env.TAG_NAME} -dmfd=true -digmc=true")	
 						execute("cd ./C-Nano-Out-of-the-Box.X/dist/pro/production && mv C-Nano-Out-of-the-Box.X.production.hex C-Nano-Out-of-the-Box-${env.TAG_NAME}.hex")
 						execute("python ./tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rlo=true -gpat=${USER_PASS}  -rpn=${githubObj.repoName} -rltv=${env.TAG_NAME} -rltt=${env.TAG_NAME} -rlua=./C-Nano-Out-of-the-Box.X/dist/pro/production/C-Nano-Out-of-the-Box-${env.TAG_NAME}.hex")	
@@ -193,7 +192,7 @@ pipeline {
 					}
 				}
 			}
-		}*/
+		}
 	}
 	
 	post {
